@@ -1,0 +1,275 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+capsLock            0x1               build/kernel/c/keyboard.o
+bitmap              0x4               build/kernel/c/pmm.o
+idt_entries         0x800             build/kernel/c/idt.o
+capsOn              0x1               build/kernel/c/keyboard.o
+idt_entries_ptr     0x6               build/kernel/c/idt.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00100000                . = 0x100000
+
+.multiboot
+ *(.multiboot)
+
+.boot
+ *(.boot)
+
+.text           0x00100000     0x2082
+ *(.text)
+ .text          0x00100000        0x8 build/kernel/asm/main.o
+                0x00100000                _start
+ *fill*         0x00100008        0x8 
+ .text          0x00100010      0x247 build/kernel/asm/idt.o
+                0x00100010                flush_idt
+                0x00100018                isr0
+                0x00100022                isr1
+                0x0010002c                isr2
+                0x00100036                isr3
+                0x00100040                isr4
+                0x0010004a                isr5
+                0x00100054                isr6
+                0x0010005e                isr7
+                0x00100068                isr8
+                0x00100070                isr9
+                0x0010007a                isr10
+                0x00100082                isr11
+                0x0010008a                isr12
+                0x00100092                isr13
+                0x0010009a                isr14
+                0x001000a2                isr17
+                0x001000aa                isr15
+                0x001000b4                isr16
+                0x001000be                isr18
+                0x001000c8                isr19
+                0x001000d2                isr20
+                0x001000dc                isr21
+                0x001000e6                isr22
+                0x001000f0                isr23
+                0x001000fa                isr24
+                0x00100104                isr25
+                0x0010010e                isr26
+                0x00100118                isr27
+                0x00100122                isr28
+                0x0010012c                isr29
+                0x00100136                isr30
+                0x00100140                isr31
+                0x0010014a                isr128
+                0x00100154                isr177
+                0x0010015e                irq0
+                0x00100168                irq1
+                0x00100172                irq2
+                0x0010017c                irq3
+                0x00100183                irq4
+                0x0010018a                irq5
+                0x00100191                irq6
+                0x00100198                irq7
+                0x0010019f                irq8
+                0x001001a6                irq9
+                0x001001ad                irq10
+                0x001001b4                irq11
+                0x001001bb                irq12
+                0x001001c2                irq13
+                0x001001c9                irq14
+                0x00100228                timer_irq0
+ *fill*         0x00100257        0x9 
+ .text          0x00100260       0x6d build/kernel/asm/vmm.o
+                0x00100260                asm_init_vmm
+ *fill*         0x001002cd        0x3 
+ .text          0x001002d0       0x10 build/kernel/asm/syscalls.o
+                0x001002d0                asm_write
+ .text          0x001002e0      0x1d3 build/kernel/c/main.o
+                0x001002e0                kernel_main
+ .text          0x001004b3      0x878 build/kernel/c/idt.o
+                0x001004b3                initIdt
+                0x00100a09                setIdtGate
+                0x00100a73                print_number
+                0x00100b0f                isr_handler
+                0x00100ca8                irq_installer
+                0x00100cbb                irq_uninstaller
+                0x00100ccf                irq_handler
+ .text          0x00100d2b      0x345 build/kernel/c/Timer.o
+                0x00100d2b                load_new_pcb_into_cpu
+                0x00100e10                irq0_Ontimer
+                0x00100fc5                initTimer
+                0x00101042                get_next_pcb
+ .text          0x00101070      0x19e build/kernel/c/keyboard.o
+                0x00101070                irq1_OnKeyboard
+                0x001011e5                initKeyboard
+ .text          0x0010120e      0x51a build/kernel/c/pmm.o
+                0x0010120e                init_pmm
+                0x001014b8                alloc_frame
+                0x0010156a                dalloc_frame
+                0x001015f5                reserve_region
+                0x001016a9                reserve_frame
+ .text          0x00101728      0x1eb build/kernel/c/vmm.o
+                0x00101728                init_vmm
+                0x00101748                vmm_map_page
+                0x00101857                IRQ14_Onpage_fault_handler
+ .text          0x00101913        0xe build/kernel/c/syscalls.o
+                0x00101913                write
+ .text          0x00101921       0xc2 build/kernel/c/upl.o
+                0x00101921                next_pcb_entry
+                0x00101962                user_program_loader
+ .text          0x001019e3      0x324 build/kernel/c/util.o
+                0x001019e3                memset
+                0x00101a13                memcmp
+                0x00101a62                memcpy
+                0x00101a9c                outPortB
+                0x00101abb                importB
+                0x00101ad8                inw
+                0x00101af7                outw
+                0x00101b18                get_next_cluster
+                0x00101b8a                ata_read_sector
+                0x00101c8f                print_hex
+ .text          0x00101d07      0x37b build/kernel/c/vga.o
+                0x00101d07                reset
+                0x00101d92                scrollUp
+                0x00101e62                newLine
+                0x00101e95                print
+
+.rodata         0x00103000      0x650
+ *(.rodata)
+ .rodata        0x00103000      0x13b build/kernel/c/main.o
+ *fill*         0x0010313b        0x1 
+ .rodata        0x0010313c      0x283 build/kernel/c/idt.o
+ *fill*         0x001033bf        0x1 
+ .rodata        0x001033c0       0x19 build/kernel/c/Timer.o
+                0x001033c0                frequency
+ *fill*         0x001033d9        0x7 
+ .rodata        0x001033e0      0x170 build/kernel/c/keyboard.o
+                0x001033e0                uppercase
+                0x00103440                lowercase
+ .rodata        0x00103550       0xad build/kernel/c/vmm.o
+ *fill*         0x001035fd        0x3 
+ .rodata        0x00103600       0x50 build/kernel/c/util.o
+
+.eh_frame       0x00103650      0x544
+ .eh_frame      0x00103650       0x38 build/kernel/c/main.o
+ .eh_frame      0x00103688       0xe0 build/kernel/c/idt.o
+                                 0xf8 (size before relaxing)
+ .eh_frame      0x00103768       0x9c build/kernel/c/Timer.o
+                                 0xb4 (size before relaxing)
+ .eh_frame      0x00103804       0x40 build/kernel/c/keyboard.o
+                                 0x58 (size before relaxing)
+ .eh_frame      0x00103844       0xb4 build/kernel/c/pmm.o
+                                 0xcc (size before relaxing)
+ .eh_frame      0x001038f8       0x64 build/kernel/c/vmm.o
+                                 0x7c (size before relaxing)
+ .eh_frame      0x0010395c       0x20 build/kernel/c/syscalls.o
+                                 0x38 (size before relaxing)
+ .eh_frame      0x0010397c       0x40 build/kernel/c/upl.o
+                                 0x58 (size before relaxing)
+ .eh_frame      0x001039bc      0x144 build/kernel/c/util.o
+                                0x15c (size before relaxing)
+ .eh_frame      0x00103b00       0x94 build/kernel/c/vga.o
+                                 0xac (size before relaxing)
+
+.rel.dyn        0x00103b94        0x0
+ .rel.text      0x00103b94        0x0 build/kernel/asm/main.o
+ .rel.data      0x00103b94        0x0 build/kernel/asm/main.o
+
+.data           0x00104000       0x8d
+ *(.data)
+ .data          0x00104000        0x0 build/kernel/c/main.o
+ .data          0x00104000       0x80 build/kernel/c/idt.o
+                0x00104000                cpu_interrupts_messages
+ .data          0x00104080        0x4 build/kernel/c/Timer.o
+                0x00104080                amount_of_used_pcb
+ .data          0x00104084        0x0 build/kernel/c/keyboard.o
+ .data          0x00104084        0x0 build/kernel/c/pmm.o
+ .data          0x00104084        0x0 build/kernel/c/vmm.o
+ .data          0x00104084        0x0 build/kernel/c/syscalls.o
+ .data          0x00104084        0x4 build/kernel/c/upl.o
+                0x00104084                kernel_pcb_holder
+ .data          0x00104088        0x0 build/kernel/c/util.o
+ .data          0x00104088        0x5 build/kernel/c/vga.o
+                0x00104088                vga
+                0x0010408c                default_colour
+
+.bss            0x00105000     0x405d
+ *(COMMON)
+ COMMON         0x00105000      0x806 build/kernel/c/idt.o
+                0x00105000                idt_entries
+                0x00105800                idt_entries_ptr
+ COMMON         0x00105806        0x2 build/kernel/c/keyboard.o
+                0x00105806                capsLock
+                0x00105807                capsOn
+ COMMON         0x00105808        0x4 build/kernel/c/pmm.o
+                0x00105808                bitmap
+ *(.bss*)
+ *fill*         0x0010580c      0x7f4 
+ .bss           0x00106000     0x3000 build/kernel/asm/vmm.o
+                0x00106000                page_dir
+                0x00107000                page_table1
+                0x00108000                page_table2
+ .bss           0x00109000        0x0 build/kernel/c/main.o
+ .bss           0x00109000       0x40 build/kernel/c/idt.o
+                0x00109000                irq_routines
+ .bss           0x00109040        0x8 build/kernel/c/Timer.o
+                0x00109040                ticks
+ .bss           0x00109048        0x0 build/kernel/c/keyboard.o
+ .bss           0x00109048       0x10 build/kernel/c/pmm.o
+                0x00109048                highest_frame
+                0x00109050                bitmap_size
+ .bss           0x00109058        0x0 build/kernel/c/vmm.o
+ .bss           0x00109058        0x0 build/kernel/c/syscalls.o
+ .bss           0x00109058        0x0 build/kernel/c/upl.o
+ .bss           0x00109058        0x0 build/kernel/c/util.o
+ .bss           0x00109058        0x5 build/kernel/c/vga.o
+                0x00109058                row
+                0x0010905a                column
+                0x0010905c                black_colour
+                0x0010905d                _kernel_end = .
+
+.pcb_storage    0x00109060     0x1db8
+                0x00109060                _pcb_entries_start = .
+                0x0010ae10                . = (. + 0x1db0)
+ *fill*         0x00109060     0x1db0 
+                0x0010ae10                _pcb_cur_index = .
+                0x0010ae14                . = (. + 0x4)
+ *fill*         0x0010ae10        0x4 
+                0x0010ae14                _amount_of_used_pcb = .
+                0x0010ae18                . = (. + 0x4)
+ *fill*         0x0010ae14        0x4 
+
+.pmm_bitmap     0x0010b000    0x20000
+                0x0010b000                _pmm_bitmap_start = .
+                0x0012b000                . = (. + 0x20000)
+ *fill*         0x0010b000    0x20000 
+LOAD build/kernel/asm/main.o
+LOAD build/kernel/asm/idt.o
+LOAD build/kernel/asm/vmm.o
+LOAD build/kernel/asm/syscalls.o
+LOAD build/kernel/c/main.o
+LOAD build/kernel/c/idt.o
+LOAD build/kernel/c/Timer.o
+LOAD build/kernel/c/keyboard.o
+LOAD build/kernel/c/pmm.o
+LOAD build/kernel/c/vmm.o
+LOAD build/kernel/c/syscalls.o
+LOAD build/kernel/c/upl.o
+LOAD build/kernel/c/util.o
+LOAD build/kernel/c/vga.o
+OUTPUT(build/kernel.elf elf32-i386)
+
+.comment        0x00000000       0x11
+ .comment       0x00000000       0x11 build/kernel/c/main.o
+                                 0x12 (size before relaxing)
+ .comment       0x00000011       0x12 build/kernel/c/idt.o
+ .comment       0x00000011       0x12 build/kernel/c/Timer.o
+ .comment       0x00000011       0x12 build/kernel/c/keyboard.o
+ .comment       0x00000011       0x12 build/kernel/c/pmm.o
+ .comment       0x00000011       0x12 build/kernel/c/vmm.o
+ .comment       0x00000011       0x12 build/kernel/c/syscalls.o
+ .comment       0x00000011       0x12 build/kernel/c/upl.o
+ .comment       0x00000011       0x12 build/kernel/c/util.o
+ .comment       0x00000011       0x12 build/kernel/c/vga.o
